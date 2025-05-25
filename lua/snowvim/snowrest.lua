@@ -1,7 +1,7 @@
 local M = {}
 
 local curl = require("plenary.curl")
-local my_toml = require("snowvim.my_toml")
+local my_toml = require("snowvim.toml")
 
 local connections = my_toml.get_connections()
 local connection = connections["devpass"]

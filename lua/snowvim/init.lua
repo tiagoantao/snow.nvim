@@ -187,8 +187,4 @@ end
 
 function M.setup(opts) end
 
-vim.api.nvim_create_user_command("LetItSnow", function()
-	M.open_tree()
-end, {})
-
 return M
