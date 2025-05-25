@@ -1,7 +1,8 @@
+local M = {}
 local ts = vim.treesitter
 local parsers = require("nvim-treesitter.parsers")
 
-local function get_connections()
+function M.get_connections()
 	local path = vim.fn.expand("~/.snowflake/connections.toml")
 
 	local lines = {}
@@ -46,5 +47,4 @@ local function get_connections()
 	return connections
 end
 
-connections = get_connections()
-print(vim.inspect(connections))
+return M

@@ -1,6 +1,6 @@
 local M = {}
 local ts_parsers = require("nvim-treesitter.parsers")
-local snowrest = require("snowrest")
+local snowrest = require("snowvim.snowrest")
 local buf, win
 
 local function create_node(type, value, parent)
@@ -184,6 +184,8 @@ function M.open_tree()
 	vim.keymap.set("n", "D", display, { buffer = buf })
 	display()
 end
+
+function M.setup(opts) end
 
 vim.api.nvim_create_user_command("LetItSnow", function()
 	M.open_tree()
