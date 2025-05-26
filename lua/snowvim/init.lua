@@ -1,6 +1,6 @@
 local M = {}
-local ts_parsers = require("nvim-treesitter.parsers")
 local snowrest = require("snowvim.snowrest")
+local config = require("snowvim.config")
 local buf, win
 
 local function create_node(type, value, parent)
@@ -144,18 +144,7 @@ local function collapse_node()
 	display()
 end
 
-local function get_toml_config()
-	local path = os.getenv("HOME") .. "/.snowflake/connections.toml"
-	local file = io.open(path, "r")
-	local file_content = file:read("*a")
-	file:close()
-
-	local parser = ts_parsers.get_parser(0, "toml")
-	vim.notify("Parser: " .. vim.inspect(parser))
-end
-
 function M.open_tree()
-	get_toml_config()
 	if win and vim.api.nvim_win_is_valid(win) then
 		vim.api.nvim_set_current_win(win)
 		return
@@ -185,6 +174,8 @@ function M.open_tree()
 	display()
 end
 
-function M.setup(opts) end
+function M.setup(opts)
+	config.setup(opts)
+end
 
 return M
