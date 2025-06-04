@@ -11,7 +11,7 @@ local function get_bearer_token()
 	local connection = connections[config.opts.connection_profile]
 
 	local bearer = connection["password"]
-	return bearer
+	return string.gsub(bearer, '"', "")
 end
 
 local function format_url(template, values)
@@ -23,8 +23,9 @@ end
 local function get_api_url()
 	local connections = my_toml.get_connections()
 	local connection = connections[config.opts.connection_profile]
-	local account = connection["account"]
+	local account = string.gsub(connection["account"], '"', "")
 	local url = format_url(LOCATION_TEMPLATE, { account = account })
+	return url
 end
 
 function M.get_databases()
@@ -63,6 +64,21 @@ function M.get_tables(database, schema)
 			Authorization = "Bearer " .. bearer,
 		},
 	})
+
+	local ok, parsed = pcall(vim.json.decode, response.body)
+
+	return parsed
+end
+
+function M.get_columns(database_name, schema_name, table_name)
+	local bearer = get_bearer_token()
+	local url = get_api_url()
+	local response =
+		curl.get(url .. "databases/" .. database_name .. "/schemas/" .. schema_name .. "/tables/" .. table_name, {
+			headers = {
+				Authorization = "Bearer " .. bearer,
+			},
+		})
 
 	local ok, parsed = pcall(vim.json.decode, response.body)
 
